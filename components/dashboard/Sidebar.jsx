@@ -25,25 +25,13 @@ export default function Sidebar({ isOpen, onClose, onRefresh, loading, lastUpdat
 
   return (
     <aside
-      className="fixed left-0 top-0 bottom-0 w-[272px] flex flex-col z-40 overflow-hidden
+      className={`fixed left-0 top-0 bottom-0 w-[272px] flex flex-col z-40 overflow-hidden
         transition-transform duration-300 ease-in-out
-        lg:translate-x-0"
-      style={{ transform: isOpen ? 'translateX(0)' : undefined }}
-      // Pada mobile default -translate-x-full (dari CSS di bawah),
-      // pada lg+ selalu visible via lg:translate-x-0
+        lg:translate-x-0
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
     >
-      {/* Karena Tailwind tidak bisa handle conditional translate dgn lg override dgn baik,
-          kita pakai CSS inline untuk mobile state */}
-      <style>{`
-        @media (max-width: 1023px) {
-          .sidebar-panel {
-            transform: ${isOpen ? 'translateX(0)' : 'translateX(-100%)'};
-          }
-        }
-      `}</style>
-
       <div
-        className="sidebar-panel absolute inset-0 flex flex-col transition-transform duration-300 ease-in-out"
+        className="absolute inset-0 flex flex-col"
         style={{
           background: '#FFFFFF',
           borderRight: '1px solid rgba(0,0,0,0.08)',
@@ -67,7 +55,7 @@ export default function Sidebar({ isOpen, onClose, onRefresh, loading, lastUpdat
           <X size={16} />
         </button>
 
-        <div className="flex flex-col h-full pt-[3px] overflow-hidden">
+        <div className="flex flex-col h-full pt-[3px] overflow-y-auto">
           {/* ── Brand ── */}
           <div className="px-6 pt-6 pb-5 flex-shrink-0">
             <div className="flex items-center gap-3">
@@ -122,7 +110,7 @@ export default function Sidebar({ isOpen, onClose, onRefresh, loading, lastUpdat
           <div className="mx-6 flex-shrink-0" style={{ height: 1, background: 'rgba(0,0,0,0.06)' }} />
 
           {/* ── Category Quick Nav ── */}
-          <div className="flex-1 overflow-y-auto px-4 py-4">
+          <div className="px-4 py-4">
             <div
               className="text-[10px] font-semibold tracking-widest uppercase px-2 mb-3"
               style={{ color: '#9AAAC4' }}
@@ -168,10 +156,10 @@ export default function Sidebar({ isOpen, onClose, onRefresh, loading, lastUpdat
             </nav>
           </div>
 
-          <div className="mx-6 flex-shrink-0" style={{ height: 1, background: 'rgba(0,0,0,0.06)' }} />
+          <div className="mx-6" style={{ height: 1, background: 'rgba(0,0,0,0.06)' }} />
 
           {/* ── Refresh + Status ── */}
-          <div className="px-6 py-4 flex-shrink-0">
+          <div className="px-6 py-4">
             <motion.button
               onClick={onRefresh}
               disabled={loading}
