@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design Tokens ───────────────────────────────────── */
+:root {
+  /* Brand navy — dipakai di sidebar (tetap dark) */
+  --navy:         #0A2342;
+  --navy-mid:     #0D2E54;
+  --navy-light:   #1A3A6E;
+
+  /* Gold accent */
+  --gold:         #C9A227;
+  --gold-light:   #E4B84A;
+  --gold-dim:     rgba(201, 162, 39, 0.15);
+  --gold-dim-2:   rgba(201, 162, 39, 0.08);
+
+  /* Card (light) */
+  --card-bg:      #FFFFFF;
+  --card-border:  rgba(0, 0, 0, 0.08);
+  --card-shadow:  0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+
+  /* Text — high contrast on white */
+  --text-primary:   #0A2342;
+  --text-secondary: #4A6080;
+  --text-muted:     #6A7D99;
+  --text-dim:       #9AAAC4;
+
+  /* Status — cukup gelap untuk kontras di light bg */
+  --green:      #18B472;
+  --yellow:     #C68A00;
+  --red:        #D14545;
+  --green-bg:   rgba(24, 180, 114, 0.1);
+  --yellow-bg:  rgba(198, 138, 0, 0.1);
+  --red-bg:     rgba(209, 69, 69, 0.1);
+  --null-bg:    rgba(0, 0, 0, 0.04);
+}
+
+/* ── Base ────────────────────────────────────────────── */
+html {
+  background-color: #F0F4F8;
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--text-primary);
+  background-color: #F0F4F8;
+  background-image:
+    /* Diagonal grid lines */
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 23px,
+      rgba(0, 0, 0, 0.028) 23px,
+      rgba(0, 0, 0, 0.028) 24px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 23px,
+      rgba(0, 0, 0, 0.028) 23px,
+      rgba(0, 0, 0, 0.028) 24px
+    ),
+    /* Ambient glow */
+    radial-gradient(ellipse 80% 60% at 5% 10%, rgba(201,162,39,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 95% 90%, rgba(0,0,0,0.02) 0%, transparent 50%);
+  min-height: 100vh;
+}
+
+/* ── Card ────────────────────────────────────────────── */
+.glass-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.glass-card-subtle {
+  background: #F8FAFB;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 10px;
+}
+
+/* ── Gold Divider (di dalam sidebar yang dark) ───────── */
+.gold-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+
+/* ── Text Utilities ──────────────────────────────────── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #B8881E 0%, #C9A227 40%, #B8881E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.28); }
+
+/* ── Accordion row hover ─────────────────────────────── */
+.accordion-row-hover:hover {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+/* ── Table ───────────────────────────────────────────── */
+.kpi-table th {
+  color: var(--text-muted);
+  font-size: 0.688rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  white-space: nowrap;
+  user-select: none;
+  background: #FAFBFC;
+}
+.kpi-table td {
+  padding: 0.625rem 0.875rem;
+  font-size: 0.8125rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  vertical-align: middle;
+}
+
+/* ── Skeleton shimmer ────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.04) 25%,
+    rgba(0,0,0,0.09) 50%,
+    rgba(0,0,0,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
