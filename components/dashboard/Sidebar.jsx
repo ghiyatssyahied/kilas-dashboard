@@ -2,14 +2,15 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { RefreshCw, Clock, Wifi, WifiOff, Building2, X } from 'lucide-react';
+import { RefreshCw, Clock, Wifi, WifiOff, Building2, X, ChevronDown } from 'lucide-react';
+import { CABANG_LIST } from '@/services/kpiService';
 
 const NAV_ITEMS = [
   'Retail Funding', 'Wealth', 'TB Retail', 'TB Wholesale',
   'SME', 'Cons Loan', 'KUM KUR', 'KSM', 'Credit Card',
 ];
 
-export default function Sidebar({ isOpen, onClose, onRefresh, loading, lastUpdated, error, data }) {
+export default function Sidebar({ isOpen, onClose, onRefresh, loading, lastUpdated, error, data, selectedUnit, onUnitChange }) {
   const meta = data?.meta;
 
   const scrollToKategori = (name) => {
@@ -77,6 +78,45 @@ export default function Sidebar({ isOpen, onClose, onRefresh, loading, lastUpdat
                   Performance Dashboard
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="mx-6 flex-shrink-0" style={{ height: 1, background: 'rgba(0,0,0,0.06)' }} />
+
+          {/* ── Pilih Cabang ── */}
+          <div className="px-6 py-4 flex-shrink-0">
+            <div
+              className="text-[10px] font-semibold tracking-widest uppercase mb-2"
+              style={{ color: '#9AAAC4' }}
+            >
+              Pilih Cabang
+            </div>
+            <div className="relative">
+              <select
+                value={selectedUnit}
+                onChange={(e) => onUnitChange(e.target.value)}
+                disabled={loading}
+                className="w-full px-3 py-2.5 pr-8 rounded-lg text-[11px] font-medium appearance-none focus:outline-none focus:ring-1"
+                style={{
+                  background: 'rgba(0,0,0,0.04)',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  color: '#0A2342',
+                  opacity: loading ? 0.55 : 1,
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  focusRingColor: '#C9A227',
+                }}
+              >
+                {CABANG_LIST.map((c) => (
+                  <option key={c.kode} value={c.kode}>
+                    {c.kode} — {c.nama}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                size={13}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                style={{ color: '#9AAAC4' }}
+              />
             </div>
           </div>
 

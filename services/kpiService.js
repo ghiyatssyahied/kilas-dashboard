@@ -1,3 +1,24 @@
+export const CABANG_LIST = [
+  { kode: '11900', nama: 'KC JAKARTA GAMBIR' },
+  { kode: '11902', nama: 'KCP JAKARTA JUANDA' },
+  { kode: '11903', nama: 'KCP JAKARTA ANGKASA' },
+  { kode: '11904', nama: 'KCP JAKARTA GUNUNG SAHARI' },
+  { kode: '11906', nama: 'KCP JAKARTA KREKOT' },
+  { kode: '11907', nama: 'KCP JAKARTA PASAR BARU' },
+  { kode: '11912', nama: 'KCP JAKARTA KREKOT BUNDER' },
+  { kode: '11916', nama: 'KCP JAKARTA BATU CEPER' },
+  { kode: '11920', nama: 'KCP JAKARTA KP BPKP' },
+  { kode: '11923', nama: 'KCP JKT INTER EXPO KEMAYORAN' },
+  { kode: '11924', nama: 'KCP JAKARTA GEDUNG ASKRINDO' },
+  { kode: '11929', nama: 'KCP JAKARTA JALAN GARUDA' },
+  { kode: '11931', nama: 'KCP JAKARTA KARANG ANYAR' },
+  { kode: '11932', nama: 'KCP JAKARTA SAWAH BESAR' },
+  { kode: '11934', nama: 'KCP JAKARTA PANGERAN JAYAKARTA' },
+  { kode: '11935', nama: 'KCP JAKARTA MANGGA DUA' },
+  { kode: '11936', nama: 'KCP JAKARTA HARCO MANGGA DUA' },
+  { kode: '11937', nama: 'KCP JKT JAYAKARTA KOMPLEK 117L' },
+];
+
 /** Mock data dengan struktur identik GAS API — dipakai saat env var tidak ada */
 const MOCK_DATA = {
   status: 'success',
@@ -116,7 +137,7 @@ export const getBobotPct = (indikators = []) =>
  * Tidak ada transformer — struktur dikembalikan apa adanya.
  * @returns {Promise<object>}
  */
-export async function fetchKPI() {
+export async function fetchKPI(selectedUnit = '11903') {
   const apiUrl = process.env.NEXT_PUBLIC_GAS_API_URL;
 
   if (!apiUrl) {
@@ -125,9 +146,10 @@ export async function fetchKPI() {
     return MOCK_DATA;
   }
 
-  console.log('🔄 Fetching from GAS API...');
+  console.log(`🔄 Fetching from GAS API... (unit: ${selectedUnit})`);
 
-  const res = await fetch(apiUrl, { cache: 'no-store' });
+  const url = `${apiUrl}?unit=${encodeURIComponent(selectedUnit)}`;
+  const res = await fetch(url, { cache: 'no-store' });
 
   if (!res.ok) {
     throw new Error(`HTTP ${res.status}: ${res.statusText}`);

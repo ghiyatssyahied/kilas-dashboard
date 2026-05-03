@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from '@/components/dashboard/Sidebar';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import KPIAccordion from '@/components/dashboard/KPIAccordion';
-import { fetchKPI } from '@/services/kpiService';
+import { useKPIData } from '@/hooks/useKPIData';
 import Image from 'next/image';
 import { AlertTriangle, Menu } from 'lucide-react';
 
@@ -84,10 +84,7 @@ function ErrorState({ message, onRetry }) {
 /* ── Page ───────────────────────────────────────────────── */
 
 export default function DashboardPage() {
-  const [data,               setData]               = useState(null);
-  const [loading,            setLoading]            = useState(false);
-  const [error,              setError]              = useState(null);
-  const [lastUpdated,        setLastUpdated]        = useState(null);
+  const { data, loading, error, lastUpdated, selectedUnit, setSelectedUnit, refresh } = useKPIData();
   const [openCategorySignal, setOpenCategorySignal] = useState(null);
   const [sidebarOpen,        setSidebarOpen]        = useState(false);
 
@@ -98,28 +95,6 @@ export default function DashboardPage() {
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, []);
-
-  const loadData = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const result = await fetchKPI();
-      setData(result);
-      setLastUpdated(
-        new Date().toLocaleString('id-ID', {
-          day: '2-digit', month: 'short', year: 'numeric',
-          hour: '2-digit', minute: '2-digit',
-        })
-      );
-    } catch (err) {
-      setError(err.message);
-      setData(null);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { loadData(); }, [loadData]);
 
   return (
     <div className="flex min-h-screen">
@@ -142,11 +117,13 @@ export default function DashboardPage() {
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        onRefresh={loadData}
+        onRefresh={refresh}
         loading={loading}
         lastUpdated={lastUpdated}
         error={error}
         data={data}
+        selectedUnit={selectedUnit}
+        onUnitChange={setSelectedUnit}
       />
 
       {/* ── Main content ── */}
